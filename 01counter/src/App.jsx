@@ -37,7 +37,6 @@ function App() {
                     <h2>Hi there</h2>
                 </ModalPopup>
             }
-            <div id='modal'></div>
         </div>
     )
 }

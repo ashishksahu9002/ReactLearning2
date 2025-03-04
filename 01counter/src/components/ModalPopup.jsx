@@ -1,24 +1,37 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom';
 
-function ModalPopup({isOpen, onClose, children }) {
+function ModalPopup({ isOpen, onClose, children }) {
 
-    useEffect(()=> {
-        const overflowType = isOpen ? 'hidden': 'auto'
-        document.body.style.overflow = overflowType
-    },[isOpen])
+    const [closing, setClosing] = useState(false);
 
-    if(!isOpen) return null;
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+            setClosing(false);
+        } else {
+            document.body.style.overflow = "auto";
+        }
+    }, [isOpen]);
 
-    return createPortal (
-        <div>
-            <div onClick={(e) => e.stopPropagation()}>
-                <button onClick={onClose}>X</button>
+    const handleClose = () => {
+        setClosing(true);
+        setTimeout(onClose, 300); // Match animation duration
+    };
+
+    if (!isOpen && !closing) return null;
+
+    return createPortal(
+        <div className={`modal-overlay ${closing ? "fade-out" : "fade-in"}`} onClick={handleClose}>
+            <div className={`modal-content ${closing ? "shrink" : "pop-out"}`} onClick={(e) => e.stopPropagation()}>
+                <button className="modal-close" onClick={handleClose}>
+                    ✖
+                </button>
                 {children}
             </div>
         </div>,
-        document.getElementById("modal")
-    )
-}
+        document.body
+    );
+};
 
 export default ModalPopup
