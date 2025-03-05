@@ -156,3 +156,11 @@
         opacity: 0;
     }
 }
+
+.active {
+    color: gold;
+}
+
+.nonActive {
+    color: gray;
+}

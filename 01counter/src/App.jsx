@@ -11,12 +11,22 @@ import DropDownMenu from './components/DropDownMenu'
 import TabContent from './components/TabContent'
 import ModalPopup from './components/ModalPopup'
 import { useState } from 'react'
+import Carousel from './components/Carousel'
+import one from './assets/1.jpg'
+import two from './assets/2.jpeg'
+import three from './assets/3.jpeg'
+import four from './assets/4.jpg'
+import five from './assets/5.png'
+import StarRating from './components/StarRating'
+import RealTimeSearch from './components/RealTimeSearch'
 
 function App() {
-    
+
     const items = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
 
     const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const imageArr = [one, two, three, four, five]
 
     return (
         // <Counter />
@@ -29,15 +39,19 @@ function App() {
         // <SearchBarApi />
         // <DropDownMenu />
         // <TabContent />
-        <div>
-            <button onClick={()=>setIsModalOpen(!isModalOpen)}>Open Modal</button>
-            {isModalOpen && 
-                <ModalPopup isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <h1>Modal is open</h1>
-                    <h2>Hi there</h2>
-                </ModalPopup>
-            }
-        </div>
+        // <div>
+        //     <button onClick={()=>setIsModalOpen(!isModalOpen)}>Open Modal</button>
+        //     {isModalOpen && 
+        //         <ModalPopup isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        //             <h1>Modal is open</h1>
+        //             <h2>Hi there</h2>
+        //         </ModalPopup>
+        //     }
+        // </div>
+
+        // <Carousel images={imageArr} />
+        // <StarRating />
+        <RealTimeSearch items={items} />
     )
 }
 
