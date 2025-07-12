@@ -19,6 +19,7 @@ import four from './assets/4.jpg'
 import five from './assets/5.png'
 import StarRating from './components/StarRating'
 import RealTimeSearch from './components/RealTimeSearch'
+import MultiStepForm from './components/MultiStepForm'
 
 function App() {
 
@@ -51,7 +52,8 @@ function App() {
 
         // <Carousel images={imageArr} />
         // <StarRating />
-        <RealTimeSearch items={items} />
+        // <RealTimeSearch items={items} />
+        <MultiStepForm />
     )
 }
 
