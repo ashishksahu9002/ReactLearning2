@@ -1,56 +1,61 @@
 import { useRef, useEffect, useState } from "react";
 
-const DrumKeys = ({ data }) => {
+const DrumKeys = ({ data, isPlaying, onClick, setAudioRef }) => {
   const { keyCode, charKey, drumSound } = data;
-  const [isPlaying, setIsPlaying] = useState(false)
 
-  const audioRef = useRef(null);
-  const timeoutRef = useRef(null);
+  // No internal state for isPlaying anymore
+  // const [isPlaying, setIsPlaying] = useState(false)
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.keyCode === keyCode) {
-        console.log(`Key ${charKey} pressed. Playing: ${drumSound}`);
-        playSound();
-      }
-    };
+  // const audioRef = useRef(null);
+  // const timeoutRef = useRef(null);
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [keyCode]);
+  // useEffect(() => {
+  //   const handleKeyDown = (e) => {
+  //     if (e.keyCode === keyCode) {
+  //       console.log(`Key ${charKey} pressed. Playing: ${drumSound}`);
+  //       playSound();
+  //     }
+  //   };
 
-  const playSound = () => {
-    if (audioRef.current) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      audioRef.current.currentTime = 0; // Rewind to start
-      audioRef.current.play();
-      setIsPlaying(true)
-      timeoutRef.current = setTimeout(() => {
-        setIsPlaying(false);
-      }, 100);
-    }
-  };
+  //   window.addEventListener("keydown", handleKeyDown);
+  //   return () => window.removeEventListener("keydown", handleKeyDown);
+  // }, [keyCode]);
 
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+  // const playSound = () => {
+  //   if (audioRef.current) {
+  //     if (timeoutRef.current) {
+  //       clearTimeout(timeoutRef.current);
+  //     }
+  //     audioRef.current.currentTime = 0; // Rewind to start
+  //     audioRef.current.play();
+  //     setIsPlaying(true)
+  //     timeoutRef.current = setTimeout(() => {
+  //       setIsPlaying(false);
+  //     }, 100);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   return () => {
+  //     if (timeoutRef.current) {
+  //       clearTimeout(timeoutRef.current);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <div
       data-key={keyCode}
-      onClick={playSound}
+      // onClick={playSound}
+      onClick={onClick} // Use the onClick prop passed from parent
       className={`border-4 border-black rounded-lg m-4 text-xl p-4
         transition-transform duration-75 ease-linear w-40 text-center
         text-white bg-black/40 shadow-[0_0_8px_black] ${isPlaying ? 'playing' : ''} `}
     >
       <audio
-        ref={audioRef}
+        // ref={audioRef}
+        // Use the setAudioRef prop to pass the audio DOM element to the parent
+        ref={setAudioRef}
         src={`drumKitAssets/sounds/${drumSound}.wav`}
         preload="auto"
         // onEnded={() => setIsPlaying(false)}
