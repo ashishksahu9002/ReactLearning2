@@ -3,3 +3,7 @@
   border-color: #ffc600;
   box-shadow: 0 0 1rem #ffc600;
 }
+
+.handTransition {
+  transition: all 0.05s cubic-bezier(0.1, 2.7, 0.58, 1)
+}
