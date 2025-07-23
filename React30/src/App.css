@@ -7,3 +7,17 @@
 .handTransition {
   transition: all 0.05s cubic-bezier(0.1, 2.7, 0.58, 1)
 }
+
+:root {
+  --base: #ffc600;
+  --blur: 10px
+}
+
+img {
+  filter: blur(var(--blur));
+  background: var(--base);
+}
+
+.hl {
+  color: var(--base);
+}
