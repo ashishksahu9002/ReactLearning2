@@ -1,38 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import TypeAheadDefault from "./TypeAheadDefault";
 import TypeAheadCities from "./TypeAheadCities";
 
+const CITIES_ENDPOINT = "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+
 const TypeAheadBody = () => {
+  // const citiesRef = useRef([]); // <-- store cities here
+  // instead of useState for cities useRef can be used because it is a static value that does not change after the first initialize
   const [cities, setCities] = useState([]);
   const [showCities, setShowCities] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [showCityFlag, setShowCityFlag] = useState(false);
 
+  //Fetch only once
   useEffect(() => {
     (async () => {
       try {
-        const endpoint =
-          "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
-        const response = await fetch(endpoint);
+        const response = await fetch(CITIES_ENDPOINT);
         const resJson = await response.json();
+        // in place of setCities(resJson) it can be used as citiesRef.current = resJson
         setCities(resJson);
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error fetching cities:", error);
       }
     })();
   }, []);
 
+  // Debounced search
   useEffect(() => {
     const debounce = setTimeout(() => {
-      const displayCities = searchInput === '' ? [] : cities.filter((place) => {
-        const regex = new RegExp(searchInput, "gi");
-        return place.city.match(regex) || place.state.match(regex);
-      });
-      setShowCities(displayCities);
+      if (!searchInput.trim()) {
+        setShowCities([]);
+        return;
+      }
+      const searchLower = searchInput.toLowerCase();
+      // in place of cities.filter it can be used as citiesRef.current.filter
+      const filtered = cities.filter(
+        (place) =>
+          place.city.toLowerCase().includes(searchLower) ||
+          place.state.toLowerCase().includes(searchLower)
+      );
+      setShowCities(filtered);
     }, 500);
-    setShowCityFlag(showCities.length === 0 ? false : true);
     return () => clearTimeout(debounce);
-  }, [searchInput, showCities]);
+  }, [searchInput]);
 
 
   return (
@@ -49,7 +59,7 @@ const TypeAheadBody = () => {
         <TypeAheadDefault text={"Filter For A City"} />
         <TypeAheadDefault text={"Or A State"} />
       </div>
-      {showCityFlag && (
+      {showCities.length > 0 && (
         <div className="flex min-w-screen flex-wrap mt-10 justify-center items-center">
           {showCities.map((city, index) => (
             <TypeAheadCities key={index} cityData={city} />
