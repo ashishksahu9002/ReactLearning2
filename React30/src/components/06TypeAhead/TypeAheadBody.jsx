@@ -62,7 +62,7 @@ const TypeAheadBody = () => {
       {showCities.length > 0 && (
         <div className="flex min-w-screen flex-wrap mt-10 justify-center items-center">
           {showCities.map((city, index) => (
-            <TypeAheadCities key={index} cityData={city} />
+            <TypeAheadCities key={index} cityData={city} searchInput={searchInput} />
           ))}
         </div>
       )}
